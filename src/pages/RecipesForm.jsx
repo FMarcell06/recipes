@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { IoClose } from 'react-icons/io5';
-import { useNavigate } from 'react-router';
-import { addRecipe } from '../myBackend';
+import { useNavigate, useParams } from 'react-router';
+import { addRecipe, readRecipe, updateRecipe } from '../myBackend';
+import { useEffect } from 'react';
 
 
 export const RecipesForm = () => {
@@ -13,37 +14,62 @@ export const RecipesForm = () => {
   const [file,setFile] = useState(null);
   const [preview,setPreview] = useState(null);
   const [loading,setLoading] = useState(false);
+  const [recipe,setRecipe] = useState(null)
   const navigate = useNavigate();
 
 
 const [toast, setToast] = useState({ visible: false, text: "", type: "" });
 
+  const {id}=useParams()
+  id&&console.log(id);
+  console.log(recipe);
+  
+  useEffect(()=>{
+    if(id)
+      readRecipe(id,setRecipe)
+  },[id])
+
+  useEffect(()=>{
+    if(recipe){
+      setName(recipe.name)
+      setIngredients(recipe.ingredients)
+      setCategory(recipe.category)
+      setSteps(recipe.steps)
+      setPreview(recipe.imageUrl)
+
+    }
+  },[recipe])
+
 const handleSubmit = async (e) => {
   e.preventDefault();
   setLoading(true);
 
-  // ✅ Kötelező kép ellenőrzés
-  if (!file) {
+  // ✅ Új recept → kötelező a kép
+  if (!id && !file) {
     setLoading(false);
+    setToast({ visible: true, text: "Kép feltöltése kötelező!", type: "error" });
+    setTimeout(() => setToast(p => ({ ...p, visible: false })), 2000);
+    return;
+  }
 
-    setToast({
-      visible: true,
-      text: "Kép feltöltése kötelező!",
-      type: "error"
-    });
-
-    setTimeout(() => {
-      setToast(prev => ({ ...prev, visible: false }));
-    }, 2000);
-
+  // ✅ Update mód → meg kell várni a recept betöltését
+  if (id && !recipe) {
+    setLoading(false);
+    setToast({ visible: true, text: "Recept adatok még nem töltődtek be!", type: "error" });
+    setTimeout(() => setToast(p => ({ ...p, visible: false })), 2000);
     return;
   }
 
   try {
     const inputData = { name, ingredients, steps, category };
-    await addRecipe(inputData, file);
 
-    // ✅ SIKER
+    if (id) {
+      // ✅ Ha nincs új file → file = null → backend megtartja régit
+      await updateRecipe(id,!file ?{...inputData,imageUrl:recipe.imageUrl,deleteUrl:recipe.deleteUrl}:inputData,file);
+    } else {
+      await addRecipe(inputData, file);
+    }
+
     setToast({ visible: true, text: "Feltöltés sikeres!", type: "success" });
 
     setName("");
@@ -53,23 +79,17 @@ const handleSubmit = async (e) => {
     setFile(null);
     setPreview(null);
 
+    navigate("/recipes");
+
   } catch (error) {
     console.error("Hiba:", error);
-
     setToast({ visible: true, text: "Hiba történt a feltöltés során!", type: "error" });
 
   } finally {
     setLoading(false);
-
-    setTimeout(() => {
-      setToast(prev => ({ ...prev, visible: false }));
-    }, 2000);
+    setTimeout(() => setToast(p => ({ ...p, visible: false })), 2000);
   }
 };
-
-
-
-
 
   const handleChangeIngredients = (index, value) => {
     const newIngredients = [...ingredients];
@@ -160,7 +180,7 @@ const handleSubmit = async (e) => {
         <input type="file" accept="image/*" onChange={handleFileChange} />
         {preview && <img src={preview} alt="előnézet" className="preview-img" />}
 
-        <button className="save-btn" type="submit">Mentés</button>
+        <button className="save-btn" disabled={loading} type="submit">Mentés</button>
       </form>
 
       {loading && <div className="loading-overlay">Loading…</div>}

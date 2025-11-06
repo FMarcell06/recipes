@@ -1,6 +1,6 @@
 import axios from "axios";
 import { db } from "./firebaseApp";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, onSnapshot, orderBy, query, serverTimestamp, updateDoc } from "firebase/firestore";
 import imageCompression from "browser-image-compression";
 
 const apiKey = import.meta.env.VITE_IMGBB_API_KEY
@@ -24,7 +24,7 @@ export const addRecipe = async(recipe,file)=>{
     try {
         let imageUrl= ""
         let deleteUrl = ""
-        const compressed=await imageCompression(file,{maxWidthOrHeight:800,useWebWorker:true})
+        const compressed=await imageCompression(file,{maxSizeMB:1,maxWidthOrHeight:800,useWebWorker:true})
         const results = await uploadToImgBB(compressed)
         if(results){
             imageUrl= results.url
@@ -37,6 +37,47 @@ export const addRecipe = async(recipe,file)=>{
         
     } catch (error) {
         console.log("Nem sikreült hozzáadni! " + error);
+        
+    }
+}
+
+export const readRecipes = async (setRecipes)=>{
+    const collectionRef=collection(db,"recipes")
+    const q=query(collectionRef,orderBy("timestamp","desc"))
+    const unsubscribe = onSnapshot(q,(snapshot)=>{
+        setRecipes(snapshot.docs.map(doc=>({...doc.data(),id:doc.id})))
+    })
+    return unsubscribe
+}
+
+export const deleteRecipe=async (id,deleteUrl)=>{
+    //await axios.get(deleteUrl)
+    const docRef = doc(db,"recipes",id)
+    await deleteDoc(docRef)
+}
+
+export const readRecipe = async (id,setRecipe)=>{
+    const docRef = doc(db,"recipes",id)
+    const docData = await getDoc(docRef)
+    setRecipe(docData.data())
+}
+
+export const updateRecipe=async (id,updatedData,file)=>{
+    let imageUrl = updatedData.imageUrl || ""
+    let deleteUrl = updatedData.deleteUrl || ""
+    try {
+        if(file){
+            const compressed=await imageCompression(file,{maxSizeMB:1,maxWidthOrHeight:800,useWebWorker:true})
+            const results = await uploadToImgBB(compressed)
+            if(results){
+                imageUrl= results.url
+                deleteUrl = results.delete_url
+            }
+        }
+        const docRef = doc(db,"recipes",id)
+        await updateDoc(docRef,{...updatedData,imageUrl,deleteUrl,updatedAt:serverTimestamp()})
+    } catch (error) {
+        console.log("Hiba a módosításkor: ",error);
         
     }
 }

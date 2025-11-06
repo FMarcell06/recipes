@@ -16,6 +16,7 @@ function App() {
           <Route path='/' element={<Home />}></Route>
           <Route path='/recipes' element={<Recipes />}></Route>
           <Route path='/addnew' element={<RecipesForm />}></Route>
+          <Route path='/edit/:id' element={<RecipesForm />}></Route>
 
       </Routes>
     </>
