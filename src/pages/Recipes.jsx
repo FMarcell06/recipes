@@ -21,7 +21,7 @@ export const Recipes = () => {
   console.log(recipes);
   
   return (
-    <div style={{minHeight:"100vh",backgroundColor:"lightyellow",position:"relative"}}>
+    <div style={{minHeight:"100vh",backgroundColor:"lightyellow",position:"relative",paddingTop:"30px"}}>
       <div className='cardContainer' style={{textAlign:"center",paddingTop:"50px"}}>
         {recipes&&recipes.length>0 && recipes.map(obj=><RecipeCard key={obj.id} {...obj}/>)}
         {recipes&&recipes.length==0 && <h4>Nincsennek receptek</h4>}

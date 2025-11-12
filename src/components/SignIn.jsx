@@ -1,18 +1,37 @@
 import React from 'react'
+import { useContext } from 'react'
 import { FaHome } from 'react-icons/fa'
 import { useNavigate } from 'react-router'
+import { MyUserContext } from '../context/MyUserProvider'
+import { useEffect } from 'react'
 
 export const SignIn = () => {
     const navigate = useNavigate()
+    
+    const {signInUser,msg} = useContext(MyUserContext)
+
+    useEffect(()=>{
+        msg && msg?.signIn && navigate("/recipes")
+    },[msg])
+
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        const data = new FormData(event.currentTarget)
+        console.log(data.get("email"));
+        
+            signInUser(data.get("email"),data.get("password"))
+
+    }
   return (
     <div className="signin-container">
       <div className="signin-card">
         <h2 className="signin-title">Sign In</h2>
 
-        <form className="signin-form">
+        <form onSubmit={handleSubmit} className="signin-form">
 
           <label>Email</label>
           <input
+          name='email'
             type="email"
             placeholder='email'
             required
@@ -21,6 +40,7 @@ export const SignIn = () => {
 
           <label>Password</label>
           <input
+          name='password'
             type="password"
             placeholder='password'
             required
@@ -31,6 +51,7 @@ export const SignIn = () => {
           </button>
         </form>
       </div>
+      {msg && msg?.err && <p style={{color:"red"}}>{msg.err}</p>}
     </div>
 
   )
