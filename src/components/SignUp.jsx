@@ -5,20 +5,36 @@ import { FaHome } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import { MyUserContext } from '../context/MyUserProvider';
 import { useEffect } from 'react';
+import { MyToasty } from './MyToasty';
+import { useState } from 'react';
+import { MoonLoader } from 'react-spinners';
 
 export const SignUp = () => {
     const navigate = useNavigate()
-
+    
+    const [loading,setLoading] = useState(false)
     const {signUpUser,msg} = useContext(MyUserContext)
-
-    const handleSubmit = (event) => {
+    console.log(msg);
+    
+    const handleSubmit = async (event) => {
+        setLoading(true)
         event.preventDefault()
+        try {
+                 event.preventDefault()
         const data=new FormData(event.currentTarget)
         console.log(data.get('email'),data.get('displayName'),data.get('password'));
 
-        signUpUser(data.get('email'),data.get('displayName'),data.get('password'))
-        event.currentTarget.reset()
+        await signUpUser(data.get('email'),data.get('displayName'),data.get('password')) 
+        } catch (error) {
+          console.log(error); 
+        }finally{
+          setLoading(false)
+        }
+
     }
+
+    console.log(msg);
+    
   return (
     <div className="signup-container">
       <div className="signup-card">
@@ -50,12 +66,12 @@ export const SignUp = () => {
             required
           />
 
-          <button type="submit" className="signup-btn">
-            Sign Up
+          <button type="submit" disabled={loading} className="signup-btn">
+            {loading ? <MoonLoader /> :"Sign Up"}
           </button>
         </form>
       </div>
-        {(msg && msg?.err||msg?.signUp) && <p style={{color:"red"}}>{msg.err || msg?.signUp}</p>}
+        {msg && <MyToasty {...msg} /> }
     </div>
   );
 }

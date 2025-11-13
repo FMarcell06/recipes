@@ -4,6 +4,7 @@ import { FaHome } from 'react-icons/fa'
 import { useNavigate } from 'react-router'
 import { MyUserContext } from '../context/MyUserProvider'
 import { useEffect } from 'react'
+import { MyToasty } from './MyToasty'
 
 export const SignIn = () => {
     const navigate = useNavigate()
@@ -50,8 +51,9 @@ export const SignIn = () => {
             Log In
           </button>
         </form>
+        <div><p onClick={()=>navigate("/pwreset")}>Elfelejtett jelszó</p></div>
       </div>
-      {msg && msg?.err && <p style={{color:"red"}}>{msg.err}</p>}
+      {msg && <MyToasty {...msg} /> }
     </div>
 
   )

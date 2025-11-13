@@ -13,7 +13,7 @@ export const Header = () => {
   return (
     <div className='header'>
         <FaHome onClick={()=>navigate("/")} className='recipesHome' size={50} style={{position:"absolute",top:"5px",left:"5px"}} />
-        {user? 
+        {user?.emailVerified ?
             <div className='headerBtn-container' style={{position:"absolute",top:"5px",right:"5px"}}>
                 <RxAvatar size={50}/>
                 <h1>{user.displayName}</h1>
