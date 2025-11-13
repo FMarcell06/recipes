@@ -9,7 +9,7 @@ import { MyToasty } from './MyToasty'
 export const SignIn = () => {
     const navigate = useNavigate()
     
-    const {signInUser,msg} = useContext(MyUserContext)
+    const {signInUser,msg,setMsg} = useContext(MyUserContext)
 
     useEffect(()=>{
         msg && msg?.signIn && navigate("/recipes")
@@ -51,7 +51,7 @@ export const SignIn = () => {
             Log In
           </button>
         </form>
-        <div><p onClick={()=>navigate("/pwreset")}>Elfelejtett jelszó</p></div>
+        <div><p onClick={()=>{navigate("/pwreset");setMsg({})}}>Elfelejtett jelszó</p></div>
       </div>
       {msg && <MyToasty {...msg} /> }
     </div>
