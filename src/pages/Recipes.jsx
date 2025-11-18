@@ -8,8 +8,11 @@ import { readRecipes } from '../myBackend';
 import { RecipeCard } from '../components/RecipeCard';
 import { Header } from '../components/Header';
 import { MoonLoader } from 'react-spinners';
+import { useContext } from 'react';
+import { MyUserContext } from '../context/MyUserProvider';
 
 export const Recipes = () => {
+  const {user} = useContext(MyUserContext)
   const [recipes,setRecipes] = useState([])
   const [loading,setLoading] = useState(false)
   const navigate = useNavigate()
@@ -30,7 +33,7 @@ export const Recipes = () => {
         {recipes&&recipes.length==0 && <h4>Nincsennek receptek</h4>}
       </div>
       <Header/>
-      <button onClick={()=>navigate("/addNew")} style={{position:"absolute",bottom:"5px",right:"5px",cursor:"pointer"}} >Új recept hozzáadása</button>
+      <button disabled={!user} onClick={()=>navigate("/addNew")} style={{position:"absolute",bottom:"5px",right:"5px",cursor:"pointer"}} >Új recept hozzáadása</button>
     </div>
   )
 }

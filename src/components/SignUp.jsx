@@ -5,7 +5,6 @@ import { FaHome } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import { MyUserContext } from '../context/MyUserProvider';
 import { useEffect } from 'react';
-import { MyToasty } from './MyToasty';
 import { useState } from 'react';
 import { MoonLoader } from 'react-spinners';
 
@@ -71,7 +70,6 @@ export const SignUp = () => {
           </button>
         </form>
       </div>
-        {msg && <MyToasty {...msg} /> }
     </div>
   );
 }

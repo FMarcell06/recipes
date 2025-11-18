@@ -11,6 +11,8 @@ import { SignUp } from './components/SignUp'
 import { SignIn } from './components/SignIn'
 import { Header } from './components/Header'
 import { PwReset } from './pages/PwReset'
+import { MyToasty } from './components/MyToasty'
+import { ToastContainer } from 'react-toastify'
 
 
 
@@ -20,6 +22,8 @@ function App() {
   return (
     <div className='container'>
     <Header/>
+    <MyToasty/>
+    <ToastContainer/>
       <Routes>
           <Route path='/' element={<Home />}></Route>
           <Route path='/recipes' element={<Recipes />}></Route>

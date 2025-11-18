@@ -1,7 +1,6 @@
 import React from 'react'
 import { useContext } from 'react'
 import { MyUserContext } from '../context/MyUserProvider'
-import { MyToasty } from '../components/MyToasty'
 
 export const PwReset = () => {
     const {msg,resetPassword,setMsg} = useContext(MyUserContext)
@@ -34,7 +33,6 @@ export const PwReset = () => {
           </button>
         </form>
       </div>
-      {msg && <MyToasty {...msg} /> }
     </div>
   )
 }

@@ -4,9 +4,12 @@ import { IoClose } from 'react-icons/io5';
 import { useNavigate, useParams } from 'react-router';
 import { addRecipe, readRecipe, updateRecipe } from '../myBackend';
 import { useEffect } from 'react';
+import { useContext } from 'react';
+import { MyUserContext } from '../context/MyUserProvider';
 
 
 export const RecipesForm = () => {
+  const {user} = useContext(MyUserContext)
   const [name,setName] = useState("");
   const [ingredients,setIngredients] = useState([""]);
   const [steps,setSteps] = useState("");
@@ -61,7 +64,7 @@ const handleSubmit = async (e) => {
   }
 
   try {
-    const inputData = { name, ingredients, steps, category };
+    const inputData = { name, ingredients, steps, category, uid:user.uid, displayName:user.displayName};
 
     if (id) {
       // ✅ Ha nincs új file → file = null → backend megtartja régit

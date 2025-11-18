@@ -11,6 +11,8 @@ export const RecipeCard = ({
   imageUrl,
   deleteUrl,
   category,
+  displayName = null,
+  uid = null,
 }) => {
   const navigate = useNavigate();
   const list = Array.isArray(ingredients) ? ingredients : [];

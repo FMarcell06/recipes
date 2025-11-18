@@ -12,23 +12,20 @@ export const MyToasty = ({err,signUp,resetPw}) => {
     
     const navigate = useNavigate()
     useEffect(()=>{
-        if(err){
-            toast.error(err,{position:"top-left"})
-            setMsg({})
-        }else if(signUp){
-            toast.success(signUp,{position:"top-left"})
+        if(msg?.err){
+            toast.error(msg?.err,{position:"top-left"})
+            setMsg(null)
+        }else if(msg?.signUp){
+            toast.success(msg.signUp,{position:"top-left"})
             setTimeout(() => {
                 navigate('/signin')
             }, 2000);
-            setMsg({})
-        }else if(resetPw){ 
-            toast.success(resetPw,{position:"top-left"})
+            setMsg(null)
+        }else if(msg?.resetPw){ 
+            toast.success(msg.resetPw,{position:"top-left"})
             navigate("/signin")
+            setMsg(null)
         }
-    },[err,signUp,resetPw])
-  return (
-    <>
-        <ToastContainer />
-    </>
-  )
+    },[msg])
+  return null;
 }
