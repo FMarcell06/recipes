@@ -13,9 +13,15 @@ export const Header = () => {
   return (
     <div className='header'>
         <FaHome onClick={()=>navigate("/")} className='recipesHome' size={50} style={{position:"absolute",top:"5px",left:"5px"}} />
-        {user?.emailVerified ?
+        {user?
             <div className='headerBtn-container' style={{position:"absolute",top:"5px",right:"5px"}}>
-                <RxAvatar size={50}/>
+                <span onClick={()=>navigate("/profile")}>
+                    {user?.photoURL ? 
+                    <img src={preview}  style={{width:"50px",height:"50px",borderRadius:"50%",objectFit:"cover"}} alt="előnézet" className="preview-img" />
+                    :
+                    <RxAvatar size={50}/>
+                }
+                </span>
                 <h1>{user.displayName}</h1>
                 <button className='headerBtn' onClick={()=>logoutUser()}>Kijelentkezés</button>
             </div>

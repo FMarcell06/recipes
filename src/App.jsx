@@ -13,6 +13,7 @@ import { Header } from './components/Header'
 import { PwReset } from './pages/PwReset'
 import { MyToasty } from './components/MyToasty'
 import { ToastContainer } from 'react-toastify'
+import { UserProfile } from './pages/UserProfile'
 
 
 
@@ -32,7 +33,7 @@ function App() {
           <Route path='/signin' element={<SignIn />}></Route>
           <Route path='/signup' element={<SignUp />}></Route>
           <Route path='/pwreset' element={<PwReset />}></Route>
-
+          <Route path='/profile' element={<UserProfile />}></Route>
       </Routes>
     </div>
   )

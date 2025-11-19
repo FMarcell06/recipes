@@ -2,6 +2,8 @@ import React from "react";
 import { MdDeleteForever, MdModeEditOutline } from "react-icons/md";
 import { deleteRecipe } from "../myBackend";
 import { useNavigate } from "react-router";
+import { useContext } from "react";
+import { MyUserContext } from "../context/MyUserProvider";
 
 export const RecipeCard = ({
   id,
@@ -11,14 +13,16 @@ export const RecipeCard = ({
   imageUrl,
   deleteUrl,
   category,
-  displayName = null,
-  uid = null,
+  displayName,
+  uid,
 }) => {
+  const {user} = useContext(MyUserContext)
   const navigate = useNavigate();
   const list = Array.isArray(ingredients) ? ingredients : [];
 
   return (
     <article className="rc-card" aria-labelledby={`rc-title-${id}`}>
+      {user && user.uid==uid &&
       <div className="rc-actions">
         <button
           className="rc-icon rc-edit"
@@ -38,7 +42,7 @@ export const RecipeCard = ({
           <MdDeleteForever size={20}/>
         </button>
       </div>
-
+      }
       <div className="rc-image-wrap">
         {imageUrl ? (
           <img
@@ -53,7 +57,7 @@ export const RecipeCard = ({
 
       <div className="rc-body">
         <h2 id={`rc-title-${id}`} className="rc-title">
-          {name}
+          {name} {displayName}
         </h2>
 
         {category && <span className="rc-badge">{category}</span>}
