@@ -21,6 +21,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding: 40px 16px;
   background: rgba(255, 249, 217, 0.7); /* light yellow with slight transparency */
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
@@ -602,7 +603,7 @@ body {
   align-items: center;
   justify-content: center;
   background-color: #f5f5f599;
-  padding: 30px;
+  padding: 35px;
   height: 5vh;
   width: 100vw;
 }
@@ -632,4 +633,34 @@ body {
 .headerBtn:hover{
     background: #e68900;
 
+}
+
+.profileIcon{
+  cursor: pointer;
+}
+
+.addBtn{
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 1000;
+    margin-top: 10px;
+  padding: 12px;
+  background: #ff9800;
+  color: white;
+  border: none;
+  font-size: 13px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.addBtn:hover{
+    background: #e68900;
+}
+
+@media (max-width: 400px) {
+  .username {
+    display: none;
+  }
 }

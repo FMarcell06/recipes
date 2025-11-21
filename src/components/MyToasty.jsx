@@ -25,6 +25,9 @@ export const MyToasty = ({err,signUp,resetPw}) => {
             toast.success(msg.resetPw,{position:"top-left"})
             navigate("/signin")
             setMsg(null)
+        }else if(msg?.serverMsg){
+            toast.success(msg.serverMsg,{position:"top-left"})
+            setMsg(null)
         }
     },[msg])
   return null;

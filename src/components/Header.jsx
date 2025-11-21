@@ -17,12 +17,12 @@ export const Header = () => {
             <div className='headerBtn-container' style={{position:"absolute",top:"5px",right:"5px"}}>
                 <span onClick={()=>navigate("/profile")}>
                     {user?.photoURL ? 
-                    <img src={preview}  style={{width:"50px",height:"50px",borderRadius:"50%",objectFit:"cover"}} alt="előnézet" className="preview-img" />
+                    <img src={user.photoURL} className="profileIcon" style={{width:"50px",height:"50px",borderRadius:"50%",objectFit:"cover"}} alt="előnézet"  />
                     :
                     <RxAvatar size={50}/>
                 }
                 </span>
-                <h1>{user.displayName}</h1>
+                <h1 className='username'>{user.displayName}</h1>
                 <button className='headerBtn' onClick={()=>logoutUser()}>Kijelentkezés</button>
             </div>
             :

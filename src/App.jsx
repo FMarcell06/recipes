@@ -14,12 +14,16 @@ import { PwReset } from './pages/PwReset'
 import { MyToasty } from './components/MyToasty'
 import { ToastContainer } from 'react-toastify'
 import { UserProfile } from './pages/UserProfile'
+import { useContext } from 'react'
+import { MyUserContext } from './context/MyUserProvider'
+import { ProtectedRoute } from './ProtectedRoute'
+import { NotFound } from './components/NotFound'
 
 
 
 function App() {
   const [count, setCount] = useState(0)
-
+  const {user} = useContext(MyUserContext)
   return (
     <div className='container'>
     <Header/>
@@ -28,12 +32,13 @@ function App() {
       <Routes>
           <Route path='/' element={<Home />}></Route>
           <Route path='/recipes' element={<Recipes />}></Route>
-          <Route path='/addnew' element={<RecipesForm />}></Route>
-          <Route path='/edit/:id' element={<RecipesForm />}></Route>
+          <Route path='/addnew' element={<ProtectedRoute><RecipesForm/></ProtectedRoute>}></Route>
+          <Route path='/edit/:id' element={<ProtectedRoute><RecipesForm /></ProtectedRoute>}></Route>
           <Route path='/signin' element={<SignIn />}></Route>
           <Route path='/signup' element={<SignUp />}></Route>
           <Route path='/pwreset' element={<PwReset />}></Route>
-          <Route path='/profile' element={<UserProfile />}></Route>
+          <Route path='/profile' element={<ProtectedRoute><UserProfile /></ProtectedRoute> }></Route>
+          <Route path='*' element={<NotFound />}></Route>
       </Routes>
     </div>
   )

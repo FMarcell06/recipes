@@ -57,9 +57,11 @@ export const RecipeCard = ({
 
       <div className="rc-body">
         <h2 id={`rc-title-${id}`} className="rc-title">
-          {name} {displayName}
+          {name}
         </h2>
-
+        <div>
+          <span  style={{float:"right",color:"#555",fontStyle:"italic"}}>{displayName}</span>
+        </div>
         {category && <span className="rc-badge">{category}</span>}
 
         <div className="rc-section">

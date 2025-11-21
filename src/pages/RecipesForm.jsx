@@ -26,7 +26,10 @@ const [toast, setToast] = useState({ visible: false, text: "", type: "" });
   const {id}=useParams()
   id&&console.log(id);
   console.log(recipe);
-  
+
+    //if(!user) navigate("/")
+
+
   useEffect(()=>{
     if(id)
       readRecipe(id,setRecipe)

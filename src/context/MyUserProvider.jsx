@@ -1,10 +1,11 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth'
+import { createUserWithEmailAndPassword, deleteUser, EmailAuthProvider, onAuthStateChanged, reauthenticateWithCredential, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth'
 import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { createContext } from 'react'
 import { auth } from '../firebaseApp'
 import { useNavigate } from 'react-router'
+import { uploadImage } from '../cloudinaryUtils'
 
 export const MyUserContext = createContext()
 
@@ -25,13 +26,13 @@ export const MyUserProvider = ({children}) => {
     console.log(email,displayName,password);
     try {
       await createUserWithEmailAndPassword(auth,email,password)
-      if(auth.currentUser.emailVerified){await updateProfile(auth.currentUser,{displayName})}
+      await updateProfile(auth.currentUser,{displayName})
       await sendEmailVerification(auth.currentUser)
       console.log("visszaigazolo email elkuldve");
       
       console.log("sikerers regisztracio");
     setMsg(prev=>({...prev},{signUp:"Kattints az email címben küldött linkre!"}))
-
+    logoutUser()
     } catch (error) {
       console.log(error);
       setMsg({err:error.message})
@@ -42,7 +43,7 @@ export const MyUserProvider = ({children}) => {
 
   const logoutUser = async ()=>{
     await signOut(auth)
-    
+    setMsg({signIn:false})
   }
 
   const signInUser = async (email,password)=>{
@@ -80,8 +81,36 @@ export const MyUserProvider = ({children}) => {
     
   }
 
+  const photoUpdate = async (file) => {
+    try {
+      const uploadResult = await uploadImage(file)
+      console.log(uploadResult);
+      if(uploadResult?.url) await updateProfile(auth.currentUser,{photoURL:uploadResult.url})
+        setUser({...auth.currentUser})
+        setMsg(null)
+        setMsg({updateProfile:"Sikeres profilmódosítás!"})
+      
+    } catch (error) {
+        setMsg({err:error.message})
+    }
+  }
+
+  const deleteAccount = async (password) => {
+    try {
+      const credential = EmailAuthProvider.credential(auth.currentUser.email,password)
+      await reauthenticateWithCredential(auth.currentUser,credential)
+      await deleteUser(auth.currentUser)
+      setMsg(null)
+      setMsg({serverMsg:"Felhasználói fiók törölve!"})
+    } catch (error) {
+      console.log(error);
+      if(error.code=="auth/wrong-password") setMsg({err:"Hibás jelszó!"})
+      else setMsg({err:"Hiba történt a hiba törlésekor!"})
+    }
+  }
+
   return (
-    <MyUserContext.Provider value={{user,signUpUser,logoutUser,signInUser,msg,setMsg,resetPassword}}>
+    <MyUserContext.Provider value={{user,signUpUser,logoutUser,signInUser,msg,setMsg,resetPassword,photoUpdate,deleteAccount}}>
       {children}
     </MyUserContext.Provider>
   )

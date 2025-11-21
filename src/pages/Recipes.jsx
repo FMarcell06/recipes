@@ -33,7 +33,7 @@ export const Recipes = () => {
         {recipes&&recipes.length==0 && <h4>Nincsennek receptek</h4>}
       </div>
       <Header/>
-      <button disabled={!user} onClick={()=>navigate("/addNew")} style={{position:"absolute",bottom:"5px",right:"5px",cursor:"pointer"}} >Új recept hozzáadása</button>
+      <button disabled={!user} className='addBtn' onClick={()=>navigate("/addNew")} style={{position:"fixed",bottom:"5px",right:"5px",cursor:"pointer"}} >Új recept hozzáadása</button>
     </div>
   )
 }
