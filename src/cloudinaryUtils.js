@@ -2,9 +2,9 @@ import axios from "axios";
 import imageCompression from "browser-image-compression";
 
 
-//const API_URL = "http://localhost:5050/api/"
+const API_URL = "http://localhost:5050/api/"
 
-const API_URL="https://fm06-recipe-backend.vercel.app"
+//const API_URL="https://fm06-recipe-backend.vercel.app"
 
 const convertToBase64 = (file)=>{
     return new Promise((resolve,reject)=>{
@@ -27,4 +27,18 @@ export const uploadImage = async (file) => {
         return null;
         
     }
+}
+
+export const deleteImage = async (public_id) => {
+    console.log(public_id);
+    try {
+        const resp = await axios.post(API_URL+"deleteImage",{public_id})
+        console.log(resp.data);
+        return resp.data
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+    
 }

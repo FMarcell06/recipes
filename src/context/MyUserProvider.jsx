@@ -6,6 +6,7 @@ import { createContext } from 'react'
 import { auth } from '../firebaseApp'
 import { useNavigate } from 'react-router'
 import { uploadImage } from '../cloudinaryUtils'
+import { updateAvatar } from '../myBackend'
 
 export const MyUserContext = createContext()
 
@@ -86,6 +87,7 @@ export const MyUserProvider = ({children}) => {
       const uploadResult = await uploadImage(file)
       console.log(uploadResult);
       if(uploadResult?.url) await updateProfile(auth.currentUser,{photoURL:uploadResult.url})
+        await updateAvatar(user.uid,uploadResult.public_id)
         setUser({...auth.currentUser})
         setMsg(null)
         setMsg({updateProfile:"Sikeres profilmódosítás!"})
