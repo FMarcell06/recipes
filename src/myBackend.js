@@ -95,6 +95,8 @@ export const updateAvatar = async (uid , public_id)=>{
             oldPublicId = docSnap.data().public_id
             await updateDoc(docRef,{public_id})
         }
+        console.log("oldpublic" + oldPublicId);
+        
         if(oldPublicId) await deleteImage(oldPublicId)
 
     } catch (error) {
@@ -103,3 +105,23 @@ export const updateAvatar = async (uid , public_id)=>{
     }
 }
 
+export const deleteAvatar = async (uid) => {
+    console.log(uid);
+    let publicId = null
+    try {
+        const docRef = doc(db,"avatars",uid)
+        const docSnap = await getDoc(docRef)
+        if(!docSnap.exists()) return
+        else {
+            publicId = docSnap.data().public
+            console.log("aasdasdsads"+publicId);
+            
+            await deleteImage(publicId)
+            await deleteDoc(docRef)
+        }
+    } catch (error) {
+        console.log("Avatár törlési hiba!");
+        
+    }
+    
+}

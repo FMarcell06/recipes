@@ -6,6 +6,8 @@ import imageCompression from "browser-image-compression";
 
 const API_URL="https://fm06-recipe-backend.vercel.app"
 
+//const API_URL = "https://recipe-backend-n72t.onrender.com"
+
 const convertToBase64 = (file)=>{
     return new Promise((resolve,reject)=>{
         const reader = new FileReader()

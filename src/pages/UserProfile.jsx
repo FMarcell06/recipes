@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { IoClose } from 'react-icons/io5';
 import { useNavigate, useParams } from 'react-router';
-import { addRecipe, readRecipe, updateRecipe } from '../myBackend';
+import { addRecipe, deleteAvatar, readRecipe, updateRecipe } from '../myBackend';
 import { useEffect } from 'react';
 import { useContext } from 'react';
 import { MyUserContext } from '../context/MyUserProvider';
@@ -42,6 +42,7 @@ const handleSubmit = async (e) => {
   const handleDelete = async ()=>{
     if(window.confirm("Biztos törölni szeretni fiókját?")){
       const pw=prompt("Add meg a jelszavad a fiók törléséhez!")
+      await deleteAvatar(user.uid)
       await deleteAccount(pw)
     }
   }
