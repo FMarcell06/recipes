@@ -4,9 +4,11 @@ import imageCompression from "browser-image-compression";
 
 //const API_URL = "http://localhost:5050/api/"
 
-const API_URL="https://fm06-recipe-backend.vercel.app"
+const API_URL="https://fm06-recipe-backend.vercel.app/api/"
 
 //const API_URL = "https://recipe-backend-n72t.onrender.com"
+
+//const API_URL = "https://receptek-backend.vercel.app/api/"
 
 const convertToBase64 = (file)=>{
     return new Promise((resolve,reject)=>{
@@ -16,6 +18,7 @@ const convertToBase64 = (file)=>{
         reader.onerror=(error)=>reject(error)  
     })
 } 
+
 
 export const uploadImage = async (file) => {
     try {

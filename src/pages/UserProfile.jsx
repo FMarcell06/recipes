@@ -61,7 +61,7 @@ const handleSubmit = async (e) => {
 
         <button className="save-btn" disabled={loading} type="submit">{loading? "Mentés..." : "Mentés"}</button>
       </form>
-      <button style={{position:"fixed",bottom:"5px",right:"5px",cursor:"pointer",backgroundColor:"red"}} onClick={handleDelete}>Fiók Törlése</button>
+      <button style={{position:"fixed",bottom:"5px",right:"5px",cursor:"pointer"}} className='accDelBtn' onClick={handleDelete}>Fiók Törlése</button>
       {loading && <div className="loading-overlay">Loading…</div>}
       <IoClose
         onClick={() => navigate("/recipes")}
